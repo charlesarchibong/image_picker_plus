@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:image_crop/image_crop.dart';
-import 'package:image_picker_plus/src/entities/app_theme.dart';
 import 'package:image_picker_plus/src/custom_packages/crop_image/crop_image.dart';
+import 'package:image_picker_plus/src/entities/app_theme.dart';
+import 'package:image_picker_plus/src/entities/selected_image_details.dart';
+import 'package:image_picker_plus/src/entities/tabs_texts.dart';
 import 'package:image_picker_plus/src/utilities/enum.dart';
 import 'package:image_picker_plus/src/video_layout/record_count.dart';
 import 'package:image_picker_plus/src/video_layout/record_fade_animation.dart';
-import 'package:image_picker_plus/src/entities/selected_image_details.dart';
-import 'package:image_picker_plus/src/entities/tabs_texts.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class CustomCameraDisplay extends StatefulWidget {
@@ -104,9 +105,7 @@ class CustomCameraDisplayState extends State<CustomCameraDisplay> {
   Widget build(BuildContext context) {
     return Material(
       color: widget.appTheme.primaryColor,
-      child: allPermissionsAccessed
-          ? (initializeDone ? buildBody() : loadingProgress())
-          : failedPermissions(),
+      child: allPermissionsAccessed ? (initializeDone ? buildBody() : loadingProgress()) : failedPermissions(),
     );
   }
 
@@ -215,9 +214,7 @@ class CustomCameraDisplayState extends State<CustomCameraDisplay> {
       child: IconButton(
         onPressed: () {
           setState(() {
-            currentFlashMode = currentFlashMode == Flash.off
-                ? Flash.auto
-                : (currentFlashMode == Flash.auto ? Flash.on : Flash.off);
+            currentFlashMode = currentFlashMode == Flash.off ? Flash.auto : (currentFlashMode == Flash.auto ? Flash.on : Flash.off);
           });
           currentFlashMode == Flash.on
               ? controller.setFlashMode(FlashMode.torch)
@@ -225,12 +222,7 @@ class CustomCameraDisplayState extends State<CustomCameraDisplay> {
                   ? controller.setFlashMode(FlashMode.off)
                   : controller.setFlashMode(FlashMode.auto);
         },
-        icon: Icon(
-            currentFlashMode == Flash.on
-                ? Icons.flash_on_rounded
-                : (currentFlashMode == Flash.auto
-                    ? Icons.flash_auto_rounded
-                    : Icons.flash_off_rounded),
+        icon: Icon(currentFlashMode == Flash.on ? Icons.flash_on_rounded : (currentFlashMode == Flash.auto ? Icons.flash_auto_rounded : Icons.flash_off_rounded),
             color: Colors.white),
       ),
     );
@@ -266,13 +258,14 @@ class CustomCameraDisplayState extends State<CustomCameraDisplay> {
           duration: const Duration(seconds: 1),
           switchInCurve: Curves.easeIn,
           child: IconButton(
-            icon: const Icon(Icons.arrow_forward_rounded,
-                color: Colors.blue, size: 30),
+            icon: const Icon(
+              Icons.arrow_forward_ios_outlined,
+              color: Colors.black,
+              size: 30,
+            ),
             onPressed: () async {
-              if (widget.videoRecordFile.value != null &&
-                  !widget.clearVideoRecord.value) {
-                Uint8List byte =
-                    await widget.videoRecordFile.value!.readAsBytes();
+              if (widget.videoRecordFile.value != null && !widget.clearVideoRecord.value) {
+                Uint8List byte = await widget.videoRecordFile.value!.readAsBytes();
                 SelectedByte selectedByte = SelectedByte(
                   isThatImage: false,
                   selectedFile: widget.videoRecordFile.value!,
